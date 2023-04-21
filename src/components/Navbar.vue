@@ -3,7 +3,7 @@
         <Router-link id="logo-url" to="/">
             <img :src="logo" :alt="alt" id="logo">
         </Router-link>
-        <router-link to="/">Home</router-link> |
+        <router-link to="/">Home</router-link>
         <router-link to="/requests">Pedidos</router-link>
     </nav>
 </template>
