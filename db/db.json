@@ -93,7 +93,9 @@
       "carne": "Maminha",
       "pao": "Italiano Branco",
       "opcionais": [
-        "Bacon"
+        "Bacon",
+        "Cheddar",
+        "Salame"
       ],
       "status": "Solicitado",
       "id": 2
@@ -103,6 +105,7 @@
       "carne": "Maminha",
       "pao": "Italiano Branco",
       "opcionais": [
+        "Cheddar",
         "Salame"
       ],
       "status": "Solicitado",
@@ -124,6 +127,7 @@
       "pao": "Italiano Branco",
       "opcionais": [
         "Cheddar"
+
       ],
       "status": "Solicitado",
       "id": 5

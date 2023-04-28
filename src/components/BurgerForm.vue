@@ -105,10 +105,10 @@
 
             }
         },
-        mounted(){
+        mounted() {
             this.getIngredientes();
         },
-        components:{
+        components: {
             Message
         },
     }
