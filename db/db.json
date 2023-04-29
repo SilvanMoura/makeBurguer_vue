@@ -113,21 +113,10 @@
     },
     {
       "nome": "Silvan Moura",
-      "carne": "Alcatra",
-      "pao": "Italiano Branco",
-      "opcionais": [
-        "Cheddar"
-      ],
-      "status": "Solicitado",
-      "id": 4
-    },
-    {
-      "nome": "Silvan Moura",
       "carne": "Maminha",
       "pao": "Italiano Branco",
       "opcionais": [
         "Cheddar"
-
       ],
       "status": "Solicitado",
       "id": 5
