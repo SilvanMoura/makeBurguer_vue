@@ -93,22 +93,10 @@
       "carne": "Maminha",
       "pao": "Italiano Branco",
       "opcionais": [
-        "Bacon",
         "Cheddar",
         "Salame"
       ],
-      "status": "Em produção",
-      "id": 2
-    },
-    {
-      "nome": "Silvan Moura",
-      "carne": "Maminha",
-      "pao": "Italiano Branco",
-      "opcionais": [
-        "Cheddar",
-        "Salame"
-      ],
-      "status": "Solicitado",
+      "status": "Finalizado",
       "id": 3
     },
     {
