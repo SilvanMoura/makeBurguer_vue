@@ -1,6 +1,5 @@
 <template>
 
-    <Navbar />
     <div id="main-container">
         <main class="form-signin w-100 m-auto">
             
