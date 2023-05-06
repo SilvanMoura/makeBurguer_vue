@@ -51,7 +51,7 @@
             Message
         },
 
-        /* methods: {
+        methods: {
              async submit() {
                 const playload = {
                     email: this.email,
@@ -104,7 +104,7 @@
         beforeMount() {
             this.checkingLogin()
             
-        } */
+        }
     }
 </script>
 

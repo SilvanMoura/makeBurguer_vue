@@ -64,7 +64,7 @@
             Message,
         },
 
-        /* methods: {
+        methods: {
             async submit() {
                 const payload = {
                     name: this.userName,
@@ -114,10 +114,10 @@
                     this.$router.push('/');
                 }
             }
-        }, */
-        /* beforeMount(){
+        },
+        beforeMount(){
             this.checkingRegister()
-        } */
+        }
     }
 </script>
 
