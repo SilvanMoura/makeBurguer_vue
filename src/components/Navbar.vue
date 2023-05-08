@@ -7,17 +7,18 @@
 
         <nav>
             <router-link to="/">Home</router-link>
-            <router-link v-if="!link" to="/requests">Pedidos</router-link>
+            <router-link v-if="statusExit" to="/requests">Pedidos</router-link>
         </nav>
 
-        <router-link v-if="link" to="/login" class="btn-auth">Entrar</router-link>
-        <router-link v-if="!link" to="/" @click="logout">Sair</router-link>
+        <router-link v-if="statusEnter" to="/login" class="btn-auth">Entrar</router-link>
+        <router-link v-if="statusExit" to="/" class="btn-auth" @click="logout">Sair</router-link>
 
     </header>
     
 </template>
 
 <script>
+    
     import Cookies from 'js-cookie';
 
     export default{
@@ -25,7 +26,8 @@
         props: ["logo", "alt"],
         data(){
             return{
-                link: true
+                statusEnter: true,
+                statusExit: false
             }
         },
 
@@ -33,11 +35,15 @@
             loadPage(){
                 const token = Cookies.get("_myapp_token");
 
-                !token ? this.link=true : this.link=false ;
+                if(token){
+                    this.statusEnter = !this.statusEnter;
+                    this.statusExit = !this.statusExit;
+                }
+                
             },
             logout(){
                 Cookies.remove("_myapp_token");
-                this.$router.push('/');
+                window.location.href = "/";
             }
         },
         mounted() {

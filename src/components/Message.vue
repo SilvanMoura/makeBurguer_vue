@@ -1,7 +1,7 @@
 <template>
     <div class="message-container">
         {{msg}}
-    </div>>
+    </div>
 </template>
 
 <script>
