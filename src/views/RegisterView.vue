@@ -107,7 +107,7 @@
             loadLogin(){
                 this.$router.push('/login');
             }
-        },
+        }
     }
 </script>
 

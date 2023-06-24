@@ -6,31 +6,31 @@
             <form id="burger-form" @submit="createBurger">
 
                 <div class="input-container">
-                    <label for="nome">Nome do cliente:</label>
-                    <input type="text" id="nome" name="nome" v-model="nome" placeholder="Digite o seu nome">                    
+                    <label for="name">Nome do cliente:</label>
+                    <input type="text" id="name" name="name" v-model="name" placeholder="Digite o seu nome">
                 </div>
 
                 <div class="input-container">
-                    <label for="pao">Escolha o pão</label>
-                    <select name="pao" id="pao" v-model="pao">
+                    <label for="bread">Escolha o pão</label>
+                    <select name="bread" id="bread" v-model="breads">
                         <option value="selecioneSeuPao">Selecione o seu pão</option>
-                        <option v-for="pao in paes" :key="pao.id" :value="pao.tipo">{{pao.tipo}}</option>
+                        <option v-for="bread in breads" :key="bread.id" :value="bread.type">{{bread.type}}</option>
                     </select>
                 </div>
-
+                
                 <div class="input-container">
-                    <label for="carne">Escolha a carne do seu Burger</label>
-                    <select name="carne" id="carne" v-model="carne">
+                    <label for="meat">Escolha a carne do seu Burger</label>
+                    <select name="meat" id="meat" v-model="meat">
                         <option value="selecioneSuaCarne">Selecione o tipo de carne</option>
-                        <option v-for="carne in carnes" :key="carne.id" :value="carne.tipo">{{carne.tipo}}</option>
+                        <option v-for="meat in meats" :key="meat.id" :value="meat.type">{{meat.type}}</option>
                     </select>
                 </div>
 
-                <div id="opcionais-container" class="input-container">
-                    <label id="opcionais-title" for="opcionais">Selecione os opcionais</label>
-                    <div class="checkbox-container" v-for="opcional in opcionaisData" :key="opcional.id">
-                        <input type="checkbox" name="opcionais" v-model="opcionais" :value="opcional.tipo">
-                        <span>{{opcional.tipo}}</span>
+                <div id="optionals-container" class="input-container">
+                    <label id="optionals-title" for="optionals">Selecione os opcionais</label>
+                    <div class="checkbox-container" v-for="optional in opcionaisData" :key="optional.id">
+                        <input type="checkbox" name="optionals" v-model="optionals" :value="optional.type">
+                        <span>{{optional.type}}</span>
                     </div>
                 </div>
 
@@ -45,140 +45,165 @@
 
 <script>
 
-    import Message from './Message.vue';
+import Message from './Message.vue';
+import axios from 'axios';
 
-    export default{
-        name: "BurgerForm",
-        data() {
-            return {
-                paes: null,
-                carnes: null,
-                opcionaisData: null,
-                nome: null,
-                pao: null,
-                carne: null,
-                opcionais: [],
-                msg: null
-            }
-        },
-        methods: {
-            async getIngredientes() {
+export default {
+    name: "BurgerForm",
+    data() {
+        return {
+            breads: [],
+            meats: [],
+            optionalsData: [],
+            name: null,
+            bread: null,
+            meat: null,
+            optionals: [],
+            msg: null
+        }
+    },
+    methods: {
+        getIngredientes() {
 
-                const req = await fetch("http://localhost:3000/ingredientes");
-                const data = await req.json();
+            axios.get("http://localhost:8000/api/burguerIngredients")
+                .then(response => {
+                    const data = response.data;
+                    this.breads = [];
+                    this.meats = [];
+                    this.opcionaisData = [];
 
-                this.paes = data.paes;
-                this.carnes = data.carnes;
-                this.opcionaisData = data.opcionais;
-            },
+                    for (var i = 0; i < data.length; i++) {
+                        this.breads.push({
+                            "id": data[i].id,
+                            "type": data[i].breads
+                        });
 
-            async createBurger(e){
+                        this.meats.push({
+                            "id": data[i].id,
+                            "type": data[i].meats
+                        });
 
-                e.preventDefault();
-
-                const data = {
-                    nome: this.nome,
-                    carne: this.carne,
-                    pao: this.pao,
-                    opcionais: Array.from(this.opcionais),
-                    status: "Solicitado"
-                }
+                        this.opcionaisData.push({
+                            "id": data[i].id,
+                            "type": data[i].optionals
+                        });
+                    }
+                    console.log(this.breads);
+                })
+                .catch(error => console.log(error));
                 
-                const dataJson = JSON.stringify(data);
+        },
 
-                const req = await fetch("http://localhost:3000/burgers", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: dataJson
-                });
+        async createBurger(e) {
 
-                const res = await req.json();
-                
-                this.msg = `Pedido Nº ${res.id} realizado com sucesso`;
+            e.preventDefault();
 
-                setTimeout( () => this.msg = "" , 3000);
-
-                this.nome = "";
-                this.carne = "";
-                this.pao = "";
-                this.opcionais = "";
-
+            const data = {
+                name: this.name,
+                meat: this.meat,
+                bread: this.bread,
+                optionals: Array.from(this.optionals),
+                status: "Solicitado"
             }
-        },
-        mounted() {
-            this.getIngredientes();
-        },
-        components: {
-            Message
-        },
-    }
+
+            const dataJson = JSON.stringify(data);
+
+            const req = await fetch("http://localhost:3000/burgers", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: dataJson
+            });
+
+            const res = await req.json();
+
+            this.msg = `Pedido Nº ${res.id} realizado com sucesso`;
+
+            setTimeout(() => this.msg = "", 3000);
+
+            this.name = "";
+            this.meat = "";
+            this.breed = "";
+            this.optionals = "";
+
+        }
+    },
+    mounted() {
+        this.getIngredientes();
+
+
+    },
+    components: {
+        Message
+    },
+}
 </script>
 
 <style scoped>
-    #burger-form{
-        max-width: 400px;
-        margin: 0 auto;
-    }
+#burger-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
 
-    .input-container{
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-    }
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
 
-    label{
-        font-weight: bold;
-        margin-bottom: 15px;
-        color: #222;
-        padding: 5px 10px;
-        border-left:  4px solid #FCBA03;
-    }
+label {
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #222;
+    padding: 5px 10px;
+    border-left: 4px solid #FCBA03;
+}
 
-    input, select{
-        padding: 5px 10px;
-        width: 300px;
-    }
+input,
+select {
+    padding: 5px 10px;
+    width: 300px;
+}
 
-    #opcionais-container{
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
+#opcionais-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
 
-    #opcionais-title{
-        width: 100%;
-    }
+#opcionais-title {
+    width: 100%;
+}
 
-    .checkbox-container{
-        display: flex;
-        align-items: flex-start;
-        width: 50%;
-        margin-bottom: 20px;
-    }
+.checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    width: 50%;
+    margin-bottom: 20px;
+}
 
-    .checkbox-container span,
-    .checkbox-container input{
-        width: auto;
-    }
+.checkbox-container span,
+.checkbox-container input {
+    width: auto;
+}
 
-    .checkbox-container span{
-        margin-left: 6px;
-        font-weight: bold;
-    }
+.checkbox-container span {
+    margin-left: 6px;
+    font-weight: bold;
+}
 
-    .submit-btn{
-        background-color: #222;
-        color: #FCBA03;
-        font-weight: bold;
-        border: 2px solid #222;
-        padding: 10px;
-        font-size: 16px;
-        margin: 0 auto;
-        cursor: pointer;
-        transition: .5s;
-    }
-    
-    .submit-btn:hover{
-        background-color: transparent;
-        color: #222;
-    }
+.submit-btn {
+    background-color: #222;
+    color: #FCBA03;
+    font-weight: bold;
+    border: 2px solid #222;
+    padding: 10px;
+    font-size: 16px;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.submit-btn:hover {
+    background-color: transparent;
+    color: #222;
+}
 </style>
