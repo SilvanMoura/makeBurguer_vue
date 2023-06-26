@@ -12,7 +12,7 @@
 
                 <div class="input-container">
                     <label for="bread">Escolha o pão</label>
-                    <select name="bread" id="bread" v-model="breads">
+                    <select name="bread" id="bread" v-model="bread">
                         <option value="selecioneSeuPao">Selecione o seu pão</option>
                         <option v-for="bread in breads" :key="bread.id" :value="bread.type">{{bread.type}}</option>
                     </select>
@@ -28,7 +28,7 @@
 
                 <div id="optionals-container" class="input-container">
                     <label id="optionals-title" for="optionals">Selecione os opcionais</label>
-                    <div class="checkbox-container" v-for="optional in opcionaisData" :key="optional.id">
+                    <div class="checkbox-container" v-for="optional in optionalsData" :key="optional.id">
                         <input type="checkbox" name="optionals" v-model="optionals" :value="optional.type">
                         <span>{{optional.type}}</span>
                     </div>
@@ -70,7 +70,7 @@ export default {
                     const data = response.data;
                     this.breads = [];
                     this.meats = [];
-                    this.opcionaisData = [];
+                    this.optionalsData = [];
 
                     for (var i = 0; i < data.length; i++) {
                         this.breads.push({
@@ -83,12 +83,12 @@ export default {
                             "type": data[i].meats
                         });
 
-                        this.opcionaisData.push({
+                        this.optionalsData.push({
                             "id": data[i].id,
                             "type": data[i].optionals
                         });
                     }
-                    console.log(this.breads);
+
                 })
                 .catch(error => console.log(error));
                 
@@ -106,31 +106,23 @@ export default {
                 status: "Solicitado"
             }
 
-            const dataJson = JSON.stringify(data);
+            axios.post("http://localhost:8000/api/burguerCreate", data)
+                .then(response => {
+                    this.msg = `Pedido Nº ${response.data.id} realizado com sucesso`;
 
-            const req = await fetch("http://localhost:3000/burgers", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: dataJson
-            });
+                    setTimeout(() => this.msg = "", 3000);
 
-            const res = await req.json();
-
-            this.msg = `Pedido Nº ${res.id} realizado com sucesso`;
-
-            setTimeout(() => this.msg = "", 3000);
-
-            this.name = "";
-            this.meat = "";
-            this.breed = "";
-            this.optionals = "";
-
+                    this.name = "";
+                    this.meat = "";
+                    this.bread = "";
+                    this.optionals = "";
+                })
+            .catch(error => console.log(error));
+            
         }
     },
     mounted() {
         this.getIngredientes();
-
-
     },
     components: {
         Message
