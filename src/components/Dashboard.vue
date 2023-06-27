@@ -17,21 +17,21 @@
 
             <div class="burger-table-row" v-for="burger in burgers" :key="burger.id">
                 <div class="order-number">{{  burger.id  }}</div>
-                <div>{{  burger.nome  }}</div>
-                <div>{{  burger.pao  }}</div>
-                <div>{{  burger.carne  }}</div>
+                <div>{{  burger.name  }}</div>
+                <div>{{  burger.bread  }}</div>
+                <div>{{  burger.meat  }}</div>
                 <div>
                     <ul>
-                        <li v-for="(opcional, index) in burger.opcionais" :key="index">
+                        <li v-for="(opcional, index) in burger.optionals" :key="index">
                             {{ opcional }}
                         </li>
                     </ul>
                 </div>
-                <div>
+                <div class="actions-btn">
                     <select name="status" class="status" @change="updatedBurger($event, burger.id)">
                         <option value="">Selecione</option>
-                        <option v-for="burgerStatus in status" :key="burgerStatus.id" :value="burgerStatus.tipo" :selected="burger.status == burgerStatus.tipo">
-                            {{ burgerStatus.tipo }}
+                        <option v-for="burgerStatus in status" :key="burgerStatus.id" :value="burgerStatus.status" :selected="burger.status == burgerStatus.status">
+                            {{ burgerStatus.status }}
                         </option>
                     </select>
                     <button class="delete-btn" @click="deleteBurger(burger.id)">Cancelar</button>
@@ -62,21 +62,38 @@
         },
         methods: {
             async getPedidos() {
-                const req = await fetch("http://localhost:3000/burgers");
+                
+                const req = await fetch("http://localhost:8000/api/burguerAll");
 
                 const data = await req.json();
 
                 this.burgers = data;
 
+                for (var i = 0; i < data.length; i++) {
+                    data[i].optionals == '' ? 
+                        data[i].optionals = ["Nenhum opcional informado"] : 
+                        data[i].optionals = data[i].optionals.split(";");
+
+                    this.burguer = data[i].status;
+                }
+
                 this.getStatus();
             },
+
             async getStatus(){
-                const req = await fetch("http://localhost:3000/status");
+                const req = await fetch("http://localhost:8000/api/burguerStatus");
 
                 const data = await req.json();
 
-                this.status = data;
+                for (var i = 0; i < data.length; i++) {
+                    this.status.push({
+                        "id": data[i].id,
+                        "status": data[i].status_burguer
+                    });
+                }
+
             },
+
             async deleteBurger(id){
                 const req = await fetch(`http://localhost:3000/burgers/${id}`, {
                     method: "DELETE"
@@ -137,7 +154,16 @@
 
     #burger-table-heading div,
     .burger-table-row div{
-        width: 19%;
+        width: 16%;
+    }
+
+    .burger-table-row .actions-btn{
+        width: 25%;
+    }
+
+    .burger-table-row .actions-btn select,
+    .burger-table-row .actions-btn button{
+        border-radius: 5%;
     }
 
     .burger-table-row{
