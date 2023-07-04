@@ -35,6 +35,7 @@
 
     import Cookie from 'js-cookie';
     import Message from '../components/Message.vue';
+    import axios from 'axios';
 
     export default {
         name: "Login",
@@ -53,42 +54,38 @@
 
         methods: {
              async submit() {
-                const playload = {
+
+                const payload = {
                     email: this.email,
                     password: this.password
                 };
 
-                const req =  await fetch('http://localhost:8000/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access': 'application/json'
-                    },
-                    body: JSON.stringify(playload)
-                });
-
-                const data = await req.json();
+                axios.post('http://localhost:8000/api/login', payload )
+                .then(response =>{
+                    const data = response.data;
 
                 
-                if( data.access_token ){
-                    Cookie.set('_myapp_token', data.access_token);
-                    this.msg = "Login realizado com sucesso";
+                    if( data.access_token ){
+                        Cookie.set('_myapp_token', data.access_token);
+                        this.msg = "Login realizado com sucesso";
 
-                    setTimeout( () => {
-                        this.msg = "";
-                        window.location.href = "/"
-                        
-                        
-                    }, 3000);
-                }else{
-                    setTimeout( () => {
-                        this.msg = "Login não realizado, por favor, verifique o e-mail e/ou senha";
+                        setTimeout( () => {
+                            this.msg = "";
+                            window.location.href = "/"
+                            
+                            
+                        }, 3000);
+                    }else{
+                        setTimeout( () => {
+                            this.msg = "Login não realizado, por favor, verifique o e-mail e/ou senha";
 
-                        this.email = "";
-                        this.password = "";
+                            this.email = "";
+                            this.password = "";
 
-                    }, 3000);
-                }
+                        }, 3000);
+                    }
+                })
+                .catch(error => console.log(error));
 
             },
             loadRegister(){

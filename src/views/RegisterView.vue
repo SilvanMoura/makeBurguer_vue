@@ -46,6 +46,7 @@
 <script>
 
     import Message from '../components/Message.vue';
+    import axios from 'axios';
 
     export default {
         name: "Register",
@@ -65,43 +66,38 @@
         },
 
         methods: {
-            async submit() {
+            submit() {
                 const payload = {
                     name: this.userName,
                     email: this.email,
                     password: this.password
                 };
 
-                const req =  await fetch('http://localhost:8000/api/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
+                axios.post('http://localhost:8000/api/register', payload )
+                .then(response =>{
+                    const data = response.data;
 
-                const data = await req.json();
+                    if( data == "success" ){
+                        this.msg = "Usuário cadastrado com sucesso";
 
-                if( data == "success" ){
-                    this.msg = "Usuário cadastrado com sucesso";
+                        setTimeout( () => {
+                            this.msg = "";
+                            this.$router.push('/login');
 
-                    setTimeout( () => {
-                        this.msg = "";
-                        this.$router.push('/login');
+                        }, 3000);
+                    }else{
+                        setTimeout( () => {
+                            this.msg = "Cadastro não realizado, por favor, verifique as informações informadas";
 
-                    }, 3000);
-                }else{
-                    setTimeout( () => {
-                        this.msg = "Cadastro não realizado, por favor, verifique as informações informadas";
+                            this.userName = "";
+                            this.email = "";
+                            this.password = "";
+                            this.confirmPassword = "";
 
-                        this.userName = "";
-                        this.email = "";
-                        this.password = "";
-                        this.confirmPassword = "";
-
-                    }, 3000);
-                }
+                        }, 3000);
+                    }
+                })
+                .catch(error => console.log(error));
 
             },
             loadLogin(){

@@ -46,6 +46,7 @@
 <script>
 
     import Message from './Message.vue';
+    import axios from 'axios';
 
     export default {
         name: "Dashboard",
@@ -61,69 +62,77 @@
             Message
         },
         methods: {
-            async getPedidos() {
+            getPedidos() {
                 
-                const req = await fetch("http://localhost:8000/api/burguerAll");
+                axios.get("http://localhost:8000/api/burguerAll")
+                .then(response => {
+                    
+                    const data = response.data;
 
-                const data = await req.json();
+                    this.burgers = data;
 
-                this.burgers = data;
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].optionals == '' ? 
+                            data[i].optionals = ["Nenhum opcional informado"] : 
+                            data[i].optionals = data[i].optionals.split(";");
 
-                for (var i = 0; i < data.length; i++) {
-                    data[i].optionals == '' ? 
-                        data[i].optionals = ["Nenhum opcional informado"] : 
-                        data[i].optionals = data[i].optionals.split(";");
+                        this.burguer = data[i].status;
+                    }
 
-                    this.burguer = data[i].status;
-                }
+                    this.getStatus();
+                })
+                .catch(error => console.log(error));
 
-                this.getStatus();
-            },
-
-            async getStatus(){
-                const req = await fetch("http://localhost:8000/api/burguerStatus");
-
-                const data = await req.json();
-
-                for (var i = 0; i < data.length; i++) {
-                    this.status.push({
-                        "id": data[i].id,
-                        "status": data[i].status_burguer
-                    });
-                }
-
-            },
-
-            async deleteBurger(id){
-                const req = await fetch(`http://127.0.0.1:8000/api/burguerDelete/${id}`, {
-                    method: "DELETE"
-                });
                 
-                const res = await req.json();
-
-                this.msg = `Pedido removido com sucesso`;
-
-                setTimeout( () => this.msg = "" , 3000);
-
-                this.getPedidos();
             },
-            async updatedBurger(event, id){
+
+            getStatus(){
+                axios.get("http://localhost:8000/api/burguerStatus")
+                .then(response => {
+                    const data = response.data;
+
+                    for (var i = 0; i < data.length; i++) {
+                        this.status.push({
+                            "id": data[i].id,
+                            "status": data[i].status_burguer
+                        });
+                    }
+                })
+                .catch(error => console.log(error));
+
+                
+
+            },
+
+            deleteBurger(id){
+                axios.delete(`http://127.0.0.1:8000/api/burguerDelete/${id}`)
+                .then(response => {
+                    this.msg = `Pedido removido com sucesso`;
+
+                    setTimeout( () => this.msg = "" , 3000);
+
+                    this.getPedidos();
+                })
+                .catch(error => console.log(error));
+                
+                
+            },
+
+            updatedBurger(event, id){
 
                 const option = event.target.value;
                 
-                const dataJson = JSON.stringify({ status: option });
+                const dataJson = { status: option };
 
-                const req = await fetch(`http://localhost:8000/api/burguerUpdate/${id}`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    body: dataJson
-                });
+                axios.patch(`http://localhost:8000/api/burguerUpdate/${id}`, dataJson)
+                .then(response => {
+                    const res = response.data;
 
-                const res = await req.json();
+                    this.msg = `Pedido Nº ${res.id} atualizado para "${res.status}"`;
 
-                this.msg = `Pedido Nº ${res.id} atualizado para "${res.status}"`;
-
-                setTimeout( () => this.msg = "" , 3000);
+                    setTimeout( () => this.msg = "" , 3000);
+                })
+                .catch(error => console.log(error));
             }
         },
         mounted() {
