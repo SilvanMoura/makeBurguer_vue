@@ -34,7 +34,7 @@
                     <button type="button" @click="loadLogin">Entrar.</button>
                 </div>
                 
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+                <button class="w-100 btn btn-lg btn-warning" type="submit">Register</button>
 
             </form>
             
@@ -177,11 +177,11 @@
     #btn-login button{
         background-color: #fff;
         border: none;
-        color: #0b5ed7;
+        color: #FCBA03;
     }
 
     #btn-login button:hover{
-        color: #0c49a5;
+        color: #dfa300;
     }
 
 </style>

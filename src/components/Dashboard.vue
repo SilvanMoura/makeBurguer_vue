@@ -156,6 +156,7 @@
     #burger-table{
         max-width: 1200px;
         margin: 0 auto;
+        height: 70vh;
     }
 
     #burger-table-heading,

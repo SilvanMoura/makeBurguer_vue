@@ -23,7 +23,7 @@
                 </div>
                 
                 
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                <button class="w-100 btn btn-lg btn-warning" type="submit">Sign in</button>
 
             </form>
         </main>
@@ -62,7 +62,7 @@
                         this.email = '';
                         this.password = '';
                     }, 3000);
-                    
+
                     this.msg = "";
 
                     return false;
@@ -143,11 +143,11 @@
     #btn-register button{
         background-color: #fff;
         border: none;
-        color: #0b5ed7;
+        color: #FCBA03;
     }
 
     #btn-register button:hover{
-        color: #0c49a5;
+        color: #dfa300;
     }
 
 </style>
