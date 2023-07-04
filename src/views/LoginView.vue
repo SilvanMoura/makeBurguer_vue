@@ -55,6 +55,19 @@
         methods: {
              async submit() {
 
+                if(this.email == '' || this.password == ''){
+                    this.msg = "Informações incompletas, revise os campos.";
+
+                    setTimeout( () => {
+                        this.email = '';
+                        this.password = '';
+                    }, 3000);
+                    
+                    this.msg = "";
+
+                    return false;
+                }
+
                 const payload = {
                     email: this.email,
                     password: this.password

@@ -67,6 +67,31 @@
 
         methods: {
             submit() {
+
+                if(this.userName == '' || this.email == '' || this.password == '' || this.confirmPassword == ''){
+                    
+                    this.msg = "Informações incompletas, revise os campos.";
+
+                    setTimeout( () => {
+                        this.userName = '';
+                        this.email = '';
+                        this.password = '';
+                        this.confirmPassword = '';
+                    }, 3000);
+
+                    this.msg = "";
+
+                    return false;
+                }
+
+                if(this.password != this.confirmPassword){
+                    setTimeout( () => {
+                        this.msg = "As senhas são diferentes, revise os campos.";
+                        this.confirmPassword = '';
+                    }, 3000);
+                    this.msg = "";
+                }
+
                 const payload = {
                     name: this.userName,
                     email: this.email,

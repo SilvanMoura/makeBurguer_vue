@@ -121,6 +121,16 @@
             updatedBurger(event, id){
 
                 const option = event.target.value;
+
+                if(option == ""){
+
+                    this.msg = `A opção "Selecione não é um estado válido, selecione outro por gentileza!"`;
+                    setTimeout( () => {
+                        this.msg = "";
+                    }, 3000);
+                    
+                    return false;
+                }
                 
                 const dataJson = { status: option };
 

@@ -98,6 +98,18 @@ export default {
 
             e.preventDefault();
 
+            if(this.name == '' || this.meat == null || this.bread == null){
+                this.msg = "Por gentileza, preencha todos os campos.";
+                setTimeout( () => {
+                    this.msg = "";
+                    this.name = '';
+                    this.meat = '';
+                    this.bread = '';
+                }, 3000);
+                
+                return false;
+            }
+
             const data = {
                 name: this.name,
                 meat: this.meat,
@@ -118,6 +130,7 @@ export default {
                     this.optionals = "";
                 })
             .catch(error => console.log(error));
+            
             
         }
     },
