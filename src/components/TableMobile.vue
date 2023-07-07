@@ -34,7 +34,7 @@
                 
                 
                 <div class="order-opcional">
-                    <p>Carne:</p>
+                    <p>Opcionais:</p>
                     <ul>
                         <li v-for="(opcional, index) in burger.optionals" :key="index">
                             {{ opcional }}
@@ -63,7 +63,7 @@
     import axios from 'axios';
 
     export default {
-        name: "Dashboard",
+        name: "TableMobile",
         data() {
             return {
                 burgers: null,
@@ -179,10 +179,14 @@
         flex-wrap: wrap;
     }
 
-    /* .burger-table-row div p{
+    .burger-table-row div{
+        font-size: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-style: normal;
+        display: flex;
+        gap: 5px;
+    }
 
-    } */
-    
     .burger-table-row div{
         width: 15%;
     }
@@ -251,6 +255,7 @@
             list-style-type: none;
             margin-left: -25px;
         }
+        
     }
 
 

@@ -50,7 +50,7 @@
     import axios from 'axios';
 
     export default {
-        name: "Dashboard",
+        name: "TableDesktop",
         data() {
             return {
                 burgers: null,

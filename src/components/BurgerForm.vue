@@ -13,7 +13,7 @@
                 <div class="input-container">
                     <label for="bread">Escolha o pão</label>
                     <select name="bread" id="bread" v-model="bread">
-                        <option value="selecioneSeuPao">Selecione o seu pão</option>
+                        <option value="">Selecione o seu pão</option>
                         <option v-for="bread in breads" :key="bread.id" :value="bread.type">{{bread.type}}</option>
                     </select>
                 </div>
@@ -21,7 +21,7 @@
                 <div class="input-container">
                     <label for="meat">Escolha a carne do seu Burger</label>
                     <select name="meat" id="meat" v-model="meat">
-                        <option value="selecioneSuaCarne">Selecione o tipo de carne</option>
+                        <option value="">Selecione o tipo de carne</option>
                         <option v-for="meat in meats" :key="meat.id" :value="meat.type">{{meat.type}}</option>
                     </select>
                 </div>
@@ -136,6 +136,9 @@ export default {
     },
     mounted() {
         this.getIngredientes();
+
+        /* var selectElement = document.getElementById("mySelect");
+        selectElement.options[0].selected = true; */
     },
     components: {
         Message
@@ -169,12 +172,12 @@ select {
     width: 300px;
 }
 
-#opcionais-container {
+#optionals-container {
     flex-direction: row;
     flex-wrap: wrap;
 }
 
-#opcionais-title {
+#optionals-title {
     width: 100%;
 }
 

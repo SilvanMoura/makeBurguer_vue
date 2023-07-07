@@ -1,7 +1,7 @@
 <template>
 
     <div id="main-banner">
-        <h1>Make Your Banner</h1>
+        <h1>Make Your Burger</h1>
     </div>
 
 </template>
